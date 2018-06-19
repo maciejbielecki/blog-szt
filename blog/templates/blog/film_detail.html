@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="post">
+    {% if user.is_superuser %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+        </div>
+        <div class="col-md-6" style="text-align: right">
+            <div class="date">
+                {{ post.created_date }}
+            </div>
+        </div>
+    </div>
+    <p>{{ post.text|linebreaksbr }}</p>
+    <div class="row">
+        <div class="col-md-6">
+            <p>Autor tekstu: <i><b>{{ post.author }}</b> || <a href="{% url 'post_list_category' category=post.category %}">{{post.category}}</a></i></p>
+        </div>
+    </div>
+</div>
+    <div class="comments">
+        <!-- begin wwww.htmlcommentbox.com -->
+        <div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">Comment Form</a> is loading comments...</div>
+        <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+        <script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10&ts=1516557738665");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+        <!-- end www.htmlcommentbox.com -->
+    </div>
+{% endblock %}

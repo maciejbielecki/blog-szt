@@ -1,0 +1,47 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+    {% for post in posts %}
+<div class="post" style="border: 1px lightgray solid; padding: 10px; margin-bottom: 25px;">
+    <div class="row">
+        {% if user.is_superuser %}
+        {% if post.published_date %}
+        <div class="col-lg-12" style="color: forestgreen;">Opublikowany</div>
+        {% else %}
+        <div class="col-lg-12" style="color: red;">Nieopublikowany</div>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+        </div>
+        <div class="col-md-6" style="text-align: right">
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+        </div>
+    </div>
+    <p class="texttochange" style="color:gray;">{{ post.text }}</p>
+    <div class="row">
+        <div class="col-md-6">
+            <p>Autor tekstu: <i><b><a href="{% url 'post_list_author' author=post.author %}">{{post.author}}</a></b> || <a href="{% url 'post_list_category' category=post.category %}">{{post.category}}</a></i></p>
+        </div>
+        <div class="col-md-6 more">
+            <a style="color:#b00;" href="{% url 'post_detail' pk=post.pk %}">Więcej</a>
+        </div>
+    </div>
+    {% if user.is_superuser %}
+    <a class="btn btn-default" href="{% url 'post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+    {% endif %}
+</div>
+    {% endfor %}
+{% endblock %}
